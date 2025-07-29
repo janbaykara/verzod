@@ -1097,4 +1097,45 @@ describe("createVersionedEntity", () => {
       }
     })
   })
+
+  describe("latestSchema", () => {
+    it("should return the Zod schema for the latest version", () => {
+      const entity = createVersionedEntity({
+        latestVersion: 2,
+        versionMap: {
+          1: test_V1_version,
+          2: test_V2_version
+        },
+        getVersion(data) {
+          return (data as any).v ?? null
+        }
+      })
+
+      // Get the latest schema
+      const latestSchema = entity.latestSchema
+
+      // Verify it's the v2 schema by parsing a v2 object
+      const v2Data: V2 = {
+        name: "test",
+        v: 2,
+        variables: [
+          { name: "var1", value: "value1", masked: false },
+          { name: "var2", masked: true }
+        ]
+      }
+
+      const parseResult = latestSchema.safeParse(v2Data)
+      expect(parseResult.success).toBe(true)
+
+      // Verify it rejects v1 data (wrong version literal)
+      const v1Data: V1 = {
+        name: "test",
+        v: 1,
+        variables: [{ name: "var1", value: "value1" }]
+      }
+
+      const v1ParseResult = latestSchema.safeParse(v1Data)
+      expect(v1ParseResult.success).toBe(false)
+    })
+  })
 })

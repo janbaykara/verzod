@@ -273,6 +273,19 @@ export class VersionedEntity<
   }
 
   /**
+   * Returns the Zod schema for the latest version of the entity.
+   * 
+   * @example
+   * ```ts
+   * const UserEntity = createVersionedEntity({ ... })
+   * const latestSchema = UserEntity.latestSchema
+   * ```
+   */
+  public get latestSchema(): M[LatestVer]["schema"] {
+    return this.versionMap[this.latestVersion].schema
+  }
+
+  /**
    * Parses data and migrates it up to a specific version (not beyond).
    * 
    * @param data The data to parse and potentially migrate

@@ -125,6 +125,9 @@ A simple versioning and migration library based on Zod schemas.
 
   Environment.safeParse(invalid_schema_data) // { type: "err", error: { type: "GIVEN_VER_VALIDATION_FAIL", version: 2, versionDef: <relevant version map entry> } } <- correct version, but invalid data
 
+  // You can access the latest schema directly
+  const latestSchema = Environment.latestSchema // Returns the z.object() schema for version 2
+
   ```
 ### Referring to entities in a Zod schema
 You can refer to entities from a Zod schema using the `entityReference` method. This method takes in the entity you want to refer to and gives a custom Zod schema implementation. This schema implementation will validate the data against the entity's schema across the different versions and return the data (after migrations to the latest version if needed) if it is valid. Since, this is applicable to Zod schemas directly, this is also useful if you have a Verzod Versioned Entity, and you want to refer to other entities from it.
