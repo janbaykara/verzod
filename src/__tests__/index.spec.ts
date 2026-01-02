@@ -992,14 +992,14 @@ describe("createVersionedEntity", () => {
       if (result.type === "ok") {
         // The root's migration function saw v1 children
         expect(rootChildVersions).toEqual([1, 1])
-        
-        // Final result: parent is migrated but children are not (up didn't migrate them)
+
+        // Final result: parent is migrated, and children are also migrated by the schema's entityRefUptoVersion transform
         expect(result.value.v).toBe(2)
         expect(result.value.name).toBe("root_v2")
-        expect(result.value.children[0].v).toBe(1)
-        expect(result.value.children[0].name).toBe("child1")
-        expect(result.value.children[1].v).toBe(1)
-        expect(result.value.children[1].name).toBe("child2")
+        expect(result.value.children[0].v).toBe(2)
+        expect(result.value.children[0].name).toBe("child1_v2")
+        expect(result.value.children[1].v).toBe(2)
+        expect(result.value.children[1].name).toBe("child2_v2")
       }
     })
   })
@@ -1088,12 +1088,12 @@ describe("createVersionedEntity", () => {
       if (result.type === "ok") {
         // Parent still sees v1 child during migration (even without z.lazy)
         expect(childMigrationVersion).toBe(1)
-        
-        // Final result: parent is migrated but child is not (up didn't migrate it)
+
+        // Final result: parent is migrated, and child is also migrated by the schema's entityRefUptoVersion transform
         expect(result.value.v).toBe(2)
         expect(result.value.name).toBe("parent_parent_v2")
-        expect(result.value.child.v).toBe(1)
-        expect(result.value.child.name).toBe("child")
+        expect(result.value.child.v).toBe(2)
+        expect(result.value.child.name).toBe("child_child_v2")
       }
     })
   })
