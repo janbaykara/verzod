@@ -266,7 +266,23 @@ export class VersionedEntity<
         }
       }
 
-      finalData = upDef.up(finalData)
+      const nextData = upDef.up(finalData)
+
+      const nextDataParseResult = upDef.schema.safeParse(nextData)
+
+      if (!nextDataParseResult.success) {
+        return {
+          type: "err",
+          error: {
+            type: "GIVEN_VER_VALIDATION_FAIL",
+            version: up,
+            versionDef: upDef,
+            error: nextDataParseResult.error
+          }
+        }
+      }
+
+      finalData = nextDataParseResult.data
     }
 
     return { type: "ok", value: finalData }
