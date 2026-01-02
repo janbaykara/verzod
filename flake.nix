@@ -11,7 +11,7 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
-        nodejs = pkgs.nodejs_22;
+        nodejs = pkgs.nodejs_24;
         pnpm = pkgs.pnpm_10;
       in
         {
