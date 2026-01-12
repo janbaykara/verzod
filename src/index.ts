@@ -172,17 +172,17 @@ export class VersionedEntity<
    * @returns Whether the given data is a valid entity of the latest version of the entity.
    */
   public isLatest(data: unknown): data is SchemaOf<M[LatestVer]> {
-    const ver = this.getVersion(data);
+    const ver = this.getVersion(data)
 
-    if (ver === null) return false;
+    if (ver === null) return false
 
-    if (ver !== this.latestVersion) return false;
+    if (ver !== this.latestVersion) return false
 
-    const verDef = this.versionMap[ver];
+    const verDef = this.versionMap[ver]
 
-    if (!verDef) return false;
+    if (!verDef) return false
 
-    return verDef.schema.safeParse(data).success;
+    return verDef.schema.safeParse(data).success
   }
 
   /**
